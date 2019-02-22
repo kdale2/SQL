@@ -1,3 +1,7 @@
+/*Purpose: Create a relational database schema consisting of four relation schemas 
+representing various entities recorded by a furniture company. Define all necessary 
+attributes, domains, and primary and foreign keys. */
+
 
 drop table FullOrder;
 drop table Request;
@@ -7,7 +11,7 @@ drop table Product;
 
 create table Customer (
   CustomerID    number(3),
-  Name      	  varchar(25),
+  Name      	varchar(25),
   Address       varchar(50),
   
   primary key (CustomerID)
@@ -24,10 +28,10 @@ create table FullOrder (
 ); 
 
 create table Product (
-	ProductID			number(2),
+	ProductID		number(2),
 	Description		varchar(28),
 	Finish			varchar(10),
-	Price				number(5,2),
+	Price			number(5,2),
 
 	primary key (ProductID)
 );
