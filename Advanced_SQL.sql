@@ -5,7 +5,7 @@ DDL located below the queries */
 /* 1. Retrieve the names of all employees who work on at least 
 one of the projects. (In other words, look at the list of projects 
 given in the PROJECT table, and retrieve the names of all employees 
-who work on at least one of them.) 5 */
+who work on at least one of them.) */
 
 SELECT DISTINCT e.fname, e.lname
 FROM employee e, works_on w
@@ -20,7 +20,7 @@ FROM department d, employee e
 WHERE d.dnumber = e.dno
 ORDER BY d.dno;
 
-/* 3. List the last names of all department managers who have no dependents.   */
+/* 3. List the last names of all department managers who have no dependents. */
 
 SELECT DISTINCT e.fname, e.lname
 FROM department d, employee e
@@ -29,7 +29,7 @@ AND e.ssn NOT IN (SELECT essn FROM dependent);
 
 /* 4. Retrieve the names of all employees who work in the 
 department that has the employee with the lowest salary among all employees. 
---find lowest paid employee, get their dept, return all people in that dept*/
+--find lowest paid employee, get their dept, return all people in that dept */
 
 SELECT employee.fname, employee.lname FROM employee 
 WHERE employee.dno = (SELECT dno FROM employee WHERE salary =
