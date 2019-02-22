@@ -2,12 +2,10 @@
 representing various entities recorded by a furniture company. Define all necessary 
 attributes, domains, and primary and foreign keys. */
 
-
 drop table FullOrder;
 drop table Request;
 drop table Customer;
 drop table Product;
-
 
 create table Customer (
   CustomerID    number(3),
@@ -47,7 +45,6 @@ create table Request (
 	CONSTRAINT check_quantity
 		CHECK (Quantity BETWEEN 1 and 101)
 );
-
 
 delete from Customer;
 delete from FullOrder;
@@ -94,7 +91,6 @@ insert into Request
 	values (1009, 10, 2);
 insert into Request
 	values (1009, 40, 1);
-	
 	
 SELECT *
 FROM Customer;
