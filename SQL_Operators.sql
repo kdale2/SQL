@@ -76,34 +76,34 @@ drop table trips;
 
   CREATE TABLE TRIPS 
    (	"TID" INTEGER, 
-	    "TRIPSTATE" VARCHAR2(10 BYTE), 
-	    "TRAVELMODE" VARCHAR2(6 BYTE), 
-	    "FARE" FLOAT(12),
-      Primary key(TID)
+	"TRIPSTATE" VARCHAR2(10 BYTE), 
+	"TRAVELMODE" VARCHAR2(6 BYTE), 
+	"FARE" FLOAT(12),
+         Primary key(TID)
    ); 
    
    CREATE TABLE ByCar 
    (	TID INTEGER, 
-	    RentalCompany VARCHAR2(50 BYTE), 
-	    Mileage Number(4,2),
-      Foreign Key (TID) REFERENCES TRIPS(TID)
+	RentalCompany VARCHAR2(50 BYTE), 
+	Mileage Number(4,2),
+        Foreign Key (TID) REFERENCES TRIPS(TID)
    );
    
    CREATE TABLE ByTrain
    (	TID INTEGER,
-	    Type VARCHAR2(50 BYTE), 
-      Coach VARCHAR2(30 BYTE),
-      TrainSpeed VARCHAR2(10 BYTE),
-	    NumberofStops NUMBER(12,0),
-      Foreign Key (TID) REFERENCES TRIPS(TID)
+	Type VARCHAR2(50 BYTE), 
+        Coach VARCHAR2(30 BYTE),
+        TrainSpeed VARCHAR2(10 BYTE),
+	NumberofStops NUMBER(12,0),
+        Foreign Key (TID) REFERENCES TRIPS(TID)
    );
    
     CREATE TABLE ByPlane (
-      TID INTEGER, 
-	    Airline VARCHAR2(40 BYTE), 
-      Class VARCHAR2(30 BYTE),
-      LayoverTime FLOAT(10),
-      Foreign Key (TID) REFERENCES TRIPS(TID)
+        TID INTEGER, 
+        Airline VARCHAR2(40 BYTE), 
+        Class VARCHAR2(30 BYTE),
+        LayoverTime FLOAT(10),
+        Foreign Key (TID) REFERENCES TRIPS(TID)
    ); 
 
 INSERT INTO Trips (TID,TripState,TravelMode,Fare) VALUES (1,'IL','Car',100);
@@ -140,7 +140,6 @@ INSERT INTO ByCar (TID,RentalCompany,Mileage) VALUES (18,'Enterprise',22.5);
 INSERT INTO ByCar (TID,RentalCompany,Mileage) VALUES (20,'Personal',29);
 INSERT INTO ByCar (TID,RentalCompany,Mileage) VALUES (21,'Personal',27);
 INSERT INTO ByCar (TID,RentalCompany,Mileage) VALUES (25,'Enterprise',19.75);
-
 
 INSERT INTO ByTrain (TID,Type,Coach,TrainSpeed,NumberOfStops) VALUES (4,'Union Pacific Liner/Express','Chair car',50,4);
 INSERT INTO ByTrain (TID,Type,Coach,TrainSpeed,NumberOfStops) VALUES (6,'Amtrak/Express','Sleeper',30,3);
