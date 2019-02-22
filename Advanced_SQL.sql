@@ -45,8 +45,9 @@ FROM employee e
 WHERE salary > (SELECT (max(salary) - 20000) FROM employee);
 
 
-
--- drop tables
+------------------
+-- DDL 
+------------------
 
 DROP TABLE EMPLOYEE CASCADE CONSTRAINTS;
 DROP TABLE DEPARTMENT CASCADE CONSTRAINTS;
