@@ -65,9 +65,9 @@ INTERSECT
 SELECT DISTINCT tripstate FROM trips where travelmode= 'Car';
 
 
---------------------------------------------------------
---  DDL for Table TRIPS
---------------------------------------------------------
+----------------------------
+--  DDL 
+----------------------------
 
 drop table bycar;
 drop table byplane;
