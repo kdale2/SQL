@@ -209,8 +209,3 @@ BEGIN
         END LOOP;
         DBMS_OUTPUT.PUT_LINE('AFTER LOOP: X = ' || TO_CHAR(X));
 END;
-
-
-
-
-
