@@ -44,7 +44,9 @@ BEGIN
         INSERT INTO departments (department_id, department_name, manager_id, location_id)
         VALUES (dept_id, dept_name, manager, location);
 
-	DBMS_OUTPUT.PUT_LINE ('after insertion: new record where department ID is ' || dept_id || ', department name is ' || dept_name || ', manager id is ' || manager || ', and location id is ' || location || '.');
+	DBMS_OUTPUT.PUT_LINE ('after insertion: new record where department ID is ' || dept_id 
+			      || ', department name is ' || dept_name || ', manager id is ' || manager || ', 
+			      and location id is ' || location || '.');
 
 END;
 
