@@ -209,3 +209,253 @@ BEGIN
         END LOOP;
         DBMS_OUTPUT.PUT_LINE('AFTER LOOP: X = ' || TO_CHAR(X));
 END;
+
+							   
+							   
+							   
+--below is practive with Records and Prcedures
+
+							   
+--Problem 1
+
+DECLARE
+	TYPE Emp_phone IS RECORD
+        	( last_name     VARCHAR2(25), 
+          	  first_name    VARCHAR2(20), 
+          	  phone         VARCHAR2(20));
+  	V1        Emp_phone;
+
+--retrieve info of employee with ID 160, insert into record
+BEGIN
+	SELECT last_name, first_name, phone_number
+        INTO V1
+        FROM EMPLOYEES
+        WHERE EMPLOYEE_ID = 160;
+
+--print out contents of that record
+	DBMS_OUTPUT.PUT_LINE(TO_CHAR(v1.last_name) || ' ' || v1.first_name|| '   ' || v1.phone|| '   .');
+END;
+
+
+--Problem 2
+
+DROP TABLE PHONEBOOK;
+CREATE TABLE PHONEBOOK(
+    Last_name   VARCHAR2(20),
+    First_name  VARCHAR2(20),
+    Area_code   VARCHAR2(3),
+    Prefix      VARCHAR2(3),
+    Num         VARCHAR2(4)
+);
+
+DECLARE
+    TYPE phone_num IS RECORD
+        (lname        VARCHAR2(20),
+         fname        VARCHAR2(20),
+         areacode     VARCHAR2(3),
+         prefix       VARCHAR2(3),
+         ph_num       VARCHAR2(4)
+         );
+
+    
+    CURSOR c IS
+    SELECT last_name, first_name, phone_number
+    FROM employees
+    WHERE department_id in (20,80,90);
+    
+    p1   phone_num;
+
+BEGIN
+    FOR indx in c LOOP
+        IF SUBSTR (indx.phone_number, 1, 3 ) = '011' THEN
+                    p1.lname := indx.last_name;
+                    p1.fname := indx.first_name;
+                    p1.areacode := NULL;
+                    p1.prefix    := NULL;
+                    p1.ph_num    := NULL;
+
+        ELSE
+            p1.lname := indx.last_name;
+            p1.fname := indx.first_name;
+            p1.areacode  := SUBSTR (indx.phone_number, 1, 3 );
+            p1.prefix    := SUBSTR (indx.phone_number, 5, 3 );
+            p1.ph_num    := SUBSTR (indx.phone_number, 9, 4 );
+        END IF;        
+        INSERT INTO phonebook VALUES p1;        
+    END LOOP;
+END;
+
+select * from phonebook;
+
+
+
+-Problem 3
+
+DROP TABLE PHONEBOOK;
+CREATE TABLE PHONEBOOK(
+    Last_name   VARCHAR2(20),
+    First_name  VARCHAR2(20),
+    Area_code   VARCHAR2(3),
+    Prefix      VARCHAR2(3),
+    Num         VARCHAR2(4)
+);
+
+DECLARE
+    TYPE phone_num IS RECORD
+        (lname        VARCHAR2(20),
+         fname        VARCHAR2(20),
+         areacode     VARCHAR2(3),
+         prefix       VARCHAR2(3),
+         ph_num       VARCHAR2(4)
+         );
+
+    TYPE NTphonebook IS TABLE OF phone_num;
+    v1   NTphonebook := NTphonebook();
+    
+    CURSOR c IS
+    SELECT last_name, first_name, phone_number
+    FROM employees
+    WHERE department_id in (20,80,90);
+    
+    i       NUMBER;
+    v_n     INTEGER := 0;
+    
+BEGIN
+
+--RETRIEVE data from employees table, populate NT, print out data
+    FOR INDX IN C LOOP
+            v_n := v_n + 1;
+            v1.extend;
+            IF SUBSTR (indx.phone_number, 1, 3 ) = '011' THEN
+                    V1(v_n).lname := indx.last_name;
+                    V1(v_n).fname := indx.first_name;
+                    V1(v_n).areacode := NULL;
+                    V1(v_n).prefix    := NULL;
+                    V1(v_n).ph_num    := NULL;
+            ELSE
+                V1(v_n).lname := indx.last_name;
+                V1(v_n).fname := indx.first_name;
+                V1(v_n).areacode  := SUBSTR (indx.phone_number, 1, 3 );
+                V1(v_n).prefix    := SUBSTR (indx.phone_number, 5, 3 );
+                V1(v_n).ph_num    := SUBSTR (indx.phone_number, 9, 4 );
+            END IF;    
+    END LOOP;
+    
+        FOR i IN v1.FIRST .. v1.LAST LOOP
+            DBMS_OUTPUT.PUT_LINE('result: ' || v1(i).lname || ' '||  v1(i).fname || ' ' || v1(i).areacode || v1(i).prefix || v1(i).ph_num);
+            
+        END LOOP;
+END;
+
+
+--Problem 4
+
+
+DECLARE
+    TYPE empcurtyp IS REF CURSOR RETURN employees%ROWTYPE;
+    emp_cur        empcurtyp;
+    v_employee     employees%ROWTYPE;
+
+BEGIN
+
+    OPEN emp_cur FOR
+        SELECT * FROM employees
+        WHERE department_id = 100
+        ORDER BY last_name;
+    
+    DBMS_OUTPUT.PUT_LINE('Output for dept 100:');
+    LOOP
+        FETCH emp_cur INTO v_employee;
+        EXIT WHEN emp_cur%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('First name: ' || v_employee.first_name || ' Last name: ' || v_employee.last_name || '.');
+    END LOOP;
+
+
+    OPEN emp_cur FOR
+        SELECT * FROM employees
+        WHERE department_id = 30
+        ORDER BY last_name;
+    
+    DBMS_OUTPUT.PUT_LINE('-----------');
+    DBMS_OUTPUT.PUT_LINE('Output for dept 30:');
+    LOOP
+        FETCH emp_cur INTO v_employee;
+        EXIT WHEN emp_cur%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('First name: ' || v_employee.first_name || ' Last name: ' || v_employee.last_name || '.');
+    END LOOP;
+    CLOSE emp_cur;
+END;
+
+
+
+--Problem 5
+
+
+DECLARE
+          avg_salary   employees.salary%TYPE;
+          emp_count    NUMBER(5);
+
+          PROCEDURE hw5(
+                    dept_id     IN  employees.department_id%TYPE) AS
+      BEGIN
+            SELECT AVG(SALARY)
+            INTO avg_salary
+            FROM EMPLOYEES            
+            WHERE DEPARTMENT_ID = DEPT_ID;
+            
+            SELECT COUNT(first_name)
+            INTO emp_count
+            FROM EMPLOYEES
+            WHERE department_id = dept_id;
+      END;
+
+BEGIN
+        HW5(100);
+        DBMS_OUTPUT.PUT_LINE ('------------');    
+        DBMS_OUTPUT.PUT_LINE ('NUMBER of employees in this department: ' || emp_count || '.');    
+        DBMS_OUTPUT.PUT_LINE ('average salary of employees in this dept: ' || avg_salary || '.');    
+END;
+
+
+
+--Problem 6
+
+
+DECLARE
+           avg_salary   employees.salary%TYPE;
+           emp_count    NUMBER(5);
+           dept         employees.department_id%TYPE;
+           
+           CURSOR c IS
+                select DISTINCT department_id
+                from employees
+                ORDER BY department_id;
+
+           PROCEDURE hw5(
+                    dept_id     IN  employees.department_id%TYPE) AS
+            BEGIN
+                SELECT AVG(SALARY)
+                INTO avg_salary
+                FROM EMPLOYEES            
+                WHERE DEPARTMENT_ID = DEPT_ID;
+            
+                SELECT COUNT(first_name)
+                INTO emp_count
+                FROM EMPLOYEES
+                WHERE department_id = dept_id;
+            END;
+
+BEGIN
+        --use a cursor loop
+        OPEN C;
+        LOOP
+            fetch c INTO dept;
+            EXIT WHEN c%NOTFOUND;
+            HW5(dept);
+            DBMS_OUTPUT.PUT_LINE ('------------');    
+            DBMS_OUTPUT.PUT_LINE ('results for department: ' || dept);    
+            DBMS_OUTPUT.PUT_LINE ('NUMBER of employees in this department: ' || emp_count || '.');    
+            DBMS_OUTPUT.PUT_LINE ('average salary of employees in this dept: ' || avg_salary || '.');    
+        END LOOP;
+        CLose c;
+END;
